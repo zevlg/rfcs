@@ -10,15 +10,15 @@ Provide API for handling network errors.
 # Motivation
 
 Current interfaces, such as `TCPListenNotify`, `TCPConnectionNotify`
-and `UDPNotify` do not provide any information why some action has
-failed. This make it difficult to figure out software configuration
+and `UDPNotify` do not provide any information about why some action has
+failed. This makes it difficult to figure out software configuration
 errors.
 
 # Detailed design
 
-1. Create primivite union of possible network errors, something like
-   `FileErrNo`, mapping platform specific errno codes into this
-   primive values.
+1. Create a primivite union of possible network errors, for instance
+   `FileErrNo`, that maps a specific errno codes platform based on these
+   primitive values.
 
 2. Extend interfaces to accept errors. (New API functions)
 
@@ -67,36 +67,35 @@ interface TCPConnectionNotify
 
 Network code should use new API functions instead of `not_listening`
 and `connect_failed`. Default implementation of new API should
-fallbacks to old API calls. This will keep compatibility with existing
+fall back to old API calls. This will keep compatibility with existing
 network code, but in case you need to handle network error for
 yourself, you can override default implementation.
 
 # How We Teach This
 
 We could have some annotation for notifier interface functions, such
-as `\deprecated\`, so if programmer overrides `\deprecated\` function
-compiler will yield a warning.  In such case developer will know about
+as `\deprecated\`, so that compiler will yield a warning, if programmer overrides `\deprecated\` function.  In such case developer will know about
 API change.
 
 # How We Test This
 
-Existing tests for network code already covers the case, since default
-implementation fallbacks to old API.
+Existing tests for network code already cover the case, since default
+implementation falls back to old API.
 
 # Drawbacks
 
 Adds a little overhead to handling failures, however network failures
-is not that frequent thing to bother about.  Keeping backward
+are not so frequent to bother about.  Keeping backward
 compatibility is more important.
 
 # Alternatives
 
 We could have network error stored inside `TCPListener`, `UDPSocket`
-and `TCPConnection`, so notifier could extract the error value from
+and `TCPConnection`, so that notifier is able to extract the error value from
 caller on network failure.
 
-This won't require any addons not notifiers at all and won't break
-existing code as well.
+This will require niether addons nor notifiers at all and at the same time it won't break
+existing code.
 
 # Unresolved questions
 
