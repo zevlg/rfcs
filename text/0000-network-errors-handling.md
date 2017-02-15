@@ -94,7 +94,7 @@ We could have network error stored inside `TCPListener`, `UDPSocket`
 and `TCPConnection`, so that notifier is able to extract the error value from
 caller on network failure.
 
-This will require niether addons nor notifiers at all and at the same time it won't break
+This will require neither addons nor notifiers at all and at the same time it won't break
 existing code.
 
 # Unresolved questions
