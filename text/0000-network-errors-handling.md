@@ -10,15 +10,19 @@ Provide API for handling network errors.
 # Motivation
 
 Current interfaces, such as `TCPListenNotify`, `TCPConnectionNotify`
-and `UDPNotify` does not provide any interfmation why some action has
-failed. This makes difficulties in figuring out software configuration
+and `UDPNotify` do not provide any information why some action has
+failed. This make it difficult to figure out software configuration
 errors.
 
 # Detailed design
 
-Create primivite union of possible network errors, something like
-`FileErrNo` mapping platform specific errno codes into this primive values.
-Also extend interfaces to accept errors. For example:
+1. Create primivite union of possible network errors, something like
+   `FileErrNo`, mapping platform specific errno codes into this
+   primive values.
+
+2. Extend interfaces to accept errors. (New API functions)
+
+For example:
 
 ```pony
 type SocketError is
@@ -61,11 +65,11 @@ interface TCPConnectionNotify
   ...
 ```
 
-In network code instead of calling to `not_listening` and
-`connect_failed` should call new API, and default implementation of
-new API fallbacks to old API calls. This will keep compatibility with
-existing network code.  But in case you need to handle network error
-for yourself, you can override default implementation.
+Network code should use new API functions instead of `not_listening`
+and `connect_failed`. Default implementation of new API should
+fallbacks to old API calls. This will keep compatibility with existing
+network code, but in case you need to handle network error for
+yourself, you can override default implementation.
 
 # How We Teach This
 
@@ -88,8 +92,8 @@ compatibility is more important.
 # Alternatives
 
 We could have network error stored inside `TCPListener`, `UDPSocket`
-and `TCPConnection`, so on network failure notifier could extract the
-error value from caller.
+and `TCPConnection`, so notifier could extract the error value from
+caller on network failure.
 
 This won't require any addons not notifiers at all and won't break
 existing code as well.
