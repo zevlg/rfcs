@@ -10,16 +10,16 @@ Provide API for handling network errors.
 # Motivation
 
 Current interfaces, such as `TCPListenNotify`, `TCPConnectionNotify`
-and `UDPNotify` do not provide any information why some action has
-failed. This make it difficult to figure out software configuration
-errors.  Knowledge about nature of network failure is essential for
-production software.
+and `UDPNotify` do not provide any information about why some action
+has failed. This makes it difficult to figure out software
+configuration errors.  Knowledge about nature of network failure is
+essential for production software.
 
 # Detailed design
 
-1. Create primivite union of possible network errors, like
-   `FileErrNo`, mapping platform specific errno codes into this
-   primive values.
+1. Create a primivite union of possible network errors, similar to
+   `FileErrNo`, that maps a platform specific errno codes on these
+   primitive values.
 
 ```pony
    type SocketErrNo is
@@ -33,6 +33,7 @@ production software.
 ```
 
    Where:
+
 * `SocketOK' - success
 * `SocketInUse` - local address is already in use
 * `SocketConnRefused` - no-one listening on the remote address
@@ -65,8 +66,8 @@ Code example, showing usage of handling errors, is highly encouraged.
 
 # How We Test This
 
-Need to add test case for making invalid connection, checking that
-errno is set uppon call to notifier.
+Add test case of making invalid connection, checking that errno is set
+uppon call to notifier.
 
 # Drawbacks
 
